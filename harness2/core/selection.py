@@ -25,7 +25,8 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Callable, Sequence, TypeVar
 
-from . import context
+from .. import config
+from . import context, jev
 from . import prompts as P
 from .proposer import Proposer, ProposerError
 from .spec import BenchmarkAdapter, BenchPrompts, RunView, resolve_prompts
@@ -63,6 +64,9 @@ class Selection:
     experience: dict = field(default_factory=dict)
     trivial: bool = False
     evidence: str = "deliverable"
+    selector: str = "proposer"
+    selector_config: dict = field(default_factory=dict)
+    jev: dict = field(default_factory=dict)
 
     def to_dict(self) -> dict:
         return {k: v for k, v in self.__dict__.items()}
@@ -282,7 +286,8 @@ def run_selection(
     `pool_kind="finals"` adjusts only the wording shown to the selector and the failure
     fallback; the default is byte-identical to the mixed-pool behaviour.
     """
-    sel = Selection(task_id=task_id, mode=mode, k=k)
+    settings = config.selector_settings()
+    sel = Selection(task_id=task_id, mode=mode, k=k, selector_config=settings)
     bp = resolve_prompts(adapter, task_id)
 
     pool, artifacts = _render_pool(candidates, adapter, sel)
@@ -328,6 +333,32 @@ def run_selection(
     )
 
     context.assert_no_grader_verdicts(root)
+
+    if settings["backend"] == "jev":
+        decision = jev.rank_candidates(
+            root,
+            {anon: artifacts[label] for anon, label in sel.id_map.items()},
+            bp,
+            settings,
+            evidence=sel.evidence,
+        )
+        sel.jev = decision.details
+        sel.usd += decision.usd
+        if decision.chosen_id:
+            sel.chosen_id = decision.chosen_id
+            sel.chosen_label = sel.id_map[decision.chosen_id]
+            sel.chosen_run_id = pool[sel.chosen_label].run_id
+            sel.chosen_is_base = _is_base(sel.chosen_label)
+            sel.why = decision.why
+            sel.selector = "jev"
+            sel.ok = True
+            _persist(sel, root, str(pool[sel.chosen_label].run_dir))
+            return sel
+        print(
+            f"  [select.{mode}{k}] Jev deferred to agent selector: "
+            f"{sel.jev.get('fallback_reason', 'no decision')}",
+            flush=True,
+        )
 
     try:
         reply = prop.call(mission, root, f"select.{mode}{k}")
@@ -376,7 +407,14 @@ def trivial_selection(
             f"trivial_selection expects at most one candidate (the k=1 final), "
             f"got {sorted(candidates)}"
         )
-    sel = Selection(task_id=task_id, mode=mode, k=k, trivial=True)
+    sel = Selection(
+        task_id=task_id,
+        mode=mode,
+        k=k,
+        trivial=True,
+        selector="trivial",
+        selector_config=config.selector_settings(),
+    )
     pool, _artifacts = _render_pool(candidates, adapter, sel)
     sel.n_candidates = len(pool)
     if not pool:

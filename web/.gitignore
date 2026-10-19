@@ -1,0 +1,4 @@
+node_modules
+dist
+# FGVC-Aircraft photos: non-commercial research only; generated locally, never committed.
+public/rsi-aircraft.json

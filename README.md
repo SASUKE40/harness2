@@ -60,6 +60,7 @@ https://github.com/user-attachments/assets/76b10548-b14b-4c8f-9aa5-a93662df4d56
 - [Experiments](#experiments)
 - [Web access](#web-access)
 - [Results and resume](#results-and-resume)
+- [RSI dashboard](#rsi-dashboard)
 - [Citation](#citation)
 - [Contributing](#contributing)
 - [License](#license)
@@ -105,6 +106,10 @@ gcloud auth application-default login
 
 See the [setup guide](docs/SETUP.md) for model settings, authentication
 alternatives, and the [Codex executor](docs/SETUP.md#codex-executor).
+
+For optional final-output selection with TypeSafe's Jev model, install `.[jev]`
+and set `HARNESS2_SELECTOR=jev` and `TYPESAFE_API_KEY`. See
+[Jev selection](docs/SETUP.md#jev-selection) for configuration and a local demo.
 
 ## Run a benchmark
 
@@ -179,6 +184,60 @@ reflection notes, and evaluation results.
 Repeat the same command to resume. Use a new `HARNESS2_RUNS_DIR` when changing
 models or task selection. See [results and resume](docs/EXPERIMENTS.md#results-and-resume)
 for details; each command also supports `--help`.
+
+## RSI dashboard
+
+`harness2-image-demo` runs both recursion levels on a local traffic-sign
+labeling stream with Jev final selection, then exports the run for a web
+dashboard. No weights change: the recursion rewrites the harness's prompt
+(learned rules), builds tools (one script per capability under `scripts/`), and
+distills lessons into the experience library. The editor is deterministic and
+needs no model credentials. Label accuracy is computed afterwards against
+reference labels that never enter any model context.
+
+```bash
+harness2-image-demo --output runs/image-demo --export web/public   # k=3
+cd web && npm install && npm run dev
+```
+
+The page opens on a live view that replays the stream: the deployed harness's
+detections on each frame, Jev's verdict, round-by-round composition accuracy,
+and the prompt-rule, tool and lesson counters. `?view=dashboard` opens the
+analytics view.
+
+`--jev` picks the final selector. `offline` (default) substitutes a
+deterministic stand-in for the Jev API inside the real Jev request, validation
+and audit path; `live` calls TypeSafe; `off` uses only the agent selector.
+
+`--executor jev` makes Jev the labeler: each scene is rendered to PNG and Jev
+answers Choice and Box questions about it, shaped by the harness's prompt rules
+and each tool's `vision()` hook. It uses TypeSafe's opt-in image support and
+Box questions (Jev 1.14), always calls the API, and caches identical requests.
+Live Jev needs `uv pip install -e '.[jev]'` and `TYPESAFE_API_KEY`. Use a fresh
+`--output` directory for each setting.
+
+`--source real` replaces the synthetic scenes with 24 street photos and their
+published boxes from the validation split of
+[Sign_Road_Detection_Dataset](https://huggingface.co/datasets/ayoubsa/Sign_Road_Detection_Dataset)
+(CC BY 4.0), downloaded once into `dependencies/datasets/`. Photos need
+`--executor jev --jev live`; the final selector then receives the photos as
+image evidence, and when it defers, the fallback asks Jev to confirm each
+claimed label. The page loads `rsi-real.json` when present; `?data=synthetic`
+switches back.
+
+```bash
+harness2-image-demo --source real --executor jev --jev live \
+  --output runs/image-demo-real --export web/public
+```
+
+`--source aircraft` is the hard case: fine-grained recognition of nine regional
+aircraft types (ATR-42/72, CRJ-200/700, ERJ 145, E-190, Fokker 100, Saab 340,
+Dash 8-300) on 24 [FGVC-Aircraft](https://www.robots.ox.ac.uk/~vgg/data/fgvc-aircraft/)
+test photos, split at random into two tasks. Harness² can rewrite the type
+prompt with spotter cues and build a per-type yes/no tool. FGVC-Aircraft images
+are for non-commercial research only; they are downloaded at run time and
+`web/public/rsi-aircraft.json` is git-ignored. The page opens on the aircraft
+run when present (`?data=real` or `?data=synthetic` to switch).
 
 ## Citation
 

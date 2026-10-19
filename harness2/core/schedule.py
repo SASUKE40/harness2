@@ -32,6 +32,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Mapping, Sequence
 
+from .. import config
 from . import library as library_store
 from . import recursion, runmark, selection
 from . import tree as harness_tree
@@ -368,10 +369,20 @@ def _resume(
             flush=True,
         )
         return False
+    cached_sels = got.get("selections") or {}
+    for sel in cached_sels.values():
+        if (
+            not sel.get("trivial")
+            and (sel.get("selector_config") or {"backend": "proposer"})
+            != config.selector_settings()
+        ):
+            raise ValueError(
+                "This run used a different selector configuration. "
+                "Choose a new output directory for a new experiment."
+            )
     if got.get("status") != "ok":
         return False
     cached_modes = _modes_of(got)
-    cached_sels = got.get("selections") or {}
     missing = sorted(
         m
         for m in modes

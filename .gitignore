@@ -1,0 +1,6 @@
+__pycache__/
+*.egg-info/
+.ruff_cache/
+# Local run outputs and downloaded datasets (the aircraft photos are non-commercial).
+runs/
+dependencies/datasets/

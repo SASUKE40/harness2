@@ -105,6 +105,7 @@ def _print_stream(adapter, args, modes) -> int:
     )
     print(f"#   library root:    {C.library_root_for(adapter, args.k, seed=args.seed)}")
     print(f"#   domains parallel: {args.workers}")
+    print(f"#   selector: {json.dumps(config.selector_settings(), sort_keys=True)}")
     for i, (domain, task) in enumerate(stream, 1):
         print(f"{i:>4}  {domain:<40} {task}")
     print("# domains of this split, with task counts (the legal --only-domains names):")
@@ -223,6 +224,10 @@ def _check_identity(adapter, args, namespace_dir: Path) -> None:
         "domains": sorted(_csv(args.only_domains)),
         "seed": args.seed,
     }
+    selector = config.selector_settings()
+    # Preserve compatibility with existing agent-only run identities.
+    if selector["backend"] != "proposer":
+        identity["selector"] = selector
     namespace_dir.mkdir(parents=True, exist_ok=True)
     path = namespace_dir / "config.json"
     if path.is_file():

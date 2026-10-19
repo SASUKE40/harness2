@@ -22,6 +22,7 @@ dependencies = []
 [project.optional-dependencies]
 render = ["openpyxl>=3.1,<4", "python-pptx>=1,<2"]
 bridge = ["litellm[proxy]==1.95.0", "fastapi==0.139.2", "google-auth==2.56.3"]
+jev = ["typesafe-sdk==0.7.5", "resvg-py==0.5.0", "pillow==12.3.0"]
 
 [project.scripts]
 harness2 = "harness2.cli.run_sweep:main"
@@ -30,6 +31,7 @@ harness2-report = "harness2.cli.report:main"
 harness2-setup = "harness2.cli.setup:main"
 harness2-check = "harness2.cli.check:main"
 harness2-demo = "harness2.cli.demo:main"
+harness2-image-demo = "harness2.cli.image_demo:main"
 harness2-bridge = "harness2.cli.bridge:main"
 
 [tool.setuptools.packages.find]

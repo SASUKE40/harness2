@@ -1,0 +1,2000 @@
+.lv {
+  --paper: #f4f1ea;
+  --paper-2: #ebe6db;
+  --card: #ffffff;
+  --ink: #1d1b16;
+  --ink-2: #47433a;
+  --muted: #8a8478;
+  --line: #e2ddd2;
+  --line-2: #d3ccbe;
+  --indigo: #3e63dd;
+  --emerald: #1f9d6b;
+  --coral: #e5484d;
+  --amber: #d97706;
+  --violet: #8e4ec6;
+  --teal: #0d9488;
+  --sky: #0284c7;
+  --rose: #d6336c;
+  --ochre: #b7791f;
+  --sans: Inter, "SF Pro Text", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "JetBrains Mono", "SF Mono", ui-monospace, Menlo, Consolas, monospace;
+  --fs: clamp(11.5px, 0.6vw + 4.5px, 14px);
+  --shadow: 0 1px 2px rgba(29, 27, 22, 0.05), 0 10px 28px -16px rgba(29, 27, 22, 0.22);
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  gap: 10px;
+  padding: 12px 22px 0;
+  background:
+    radial-gradient(1200px 500px at 0% 0%, rgba(62, 99, 221, 0.07), transparent 60%),
+    radial-gradient(900px 500px at 100% 100%, rgba(31, 157, 107, 0.07), transparent 60%),
+    var(--paper);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: var(--fs);
+  line-height: 1.45;
+  color-scheme: light;
+}
+
+.lv button {
+  font-family: var(--sans);
+}
+
+.lv-dim {
+  color: var(--muted);
+}
+
+.lv-ok {
+  color: var(--emerald);
+  font-weight: 600;
+}
+
+.lv-warn {
+  color: var(--amber);
+  font-weight: 600;
+}
+
+.lv-bad {
+  color: var(--coral);
+  font-weight: 600;
+}
+
+/* ---------- header ---------- */
+
+.lv-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.lv-title {
+  display: flex;
+  align-items: baseline;
+  gap: 2px;
+  margin: 0;
+  font-size: calc(var(--fs) * 1.55);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  white-space: nowrap;
+}
+
+.lv-title sup {
+  position: relative;
+  top: -0.75em;
+  font-size: 0.55em;
+  color: var(--indigo);
+}
+
+.lv-plus {
+  color: var(--muted);
+  font-weight: 400;
+  margin: 0 0.35em;
+}
+
+.lv-title small {
+  margin-left: 14px;
+  font-size: 0.5em;
+  font-weight: 500;
+  letter-spacing: 0;
+  color: var(--muted);
+}
+
+.lv-mark {
+  display: inline-grid;
+  grid-template-columns: repeat(3, 7px);
+  gap: 3px;
+  margin-right: 10px;
+  align-self: center;
+}
+
+.lv-mark i {
+  height: 18px;
+  border-radius: 4px;
+  background: var(--indigo);
+}
+
+.lv-mark i:nth-child(2) {
+  background: var(--emerald);
+  height: 12px;
+  align-self: end;
+}
+
+.lv-mark i:nth-child(3) {
+  background: var(--amber);
+  height: 8px;
+  align-self: end;
+}
+
+.lv-phase {
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  color: var(--ink-2);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  box-shadow: var(--shadow);
+}
+
+.lv-phase b {
+  color: var(--indigo);
+  text-transform: capitalize;
+}
+
+/* ---------- layout ---------- */
+
+.lv-main,
+.lv-status {
+  max-width: none;
+  margin: 0;
+  width: 100%;
+}
+
+.lv-main {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) 26px minmax(0, 1fr);
+  gap: 12px;
+  min-height: 0;
+  padding: 0;
+}
+
+.lv fieldset {
+  margin: 0;
+  min-width: 0;
+  min-height: 0;
+}
+
+.lv-sec {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.42);
+  padding: 6px 16px 16px;
+}
+
+.lv-sec > legend {
+  padding: 0 8px;
+  font-size: 0.82em;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--ink-2);
+}
+
+.lv-box {
+  --c: var(--ink);
+  position: relative;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--card);
+  box-shadow: var(--shadow);
+  padding: 4px 14px 12px;
+  transition:
+    box-shadow 0.35s,
+    transform 0.35s,
+    border-color 0.35s;
+}
+
+.lv-box > legend {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--c) 12%, white);
+  color: color-mix(in srgb, var(--c) 85%, black);
+  font-size: 0.78em;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.lv-box > legend b {
+  display: inline-grid;
+  place-items: center;
+  width: 1.5em;
+  height: 1.5em;
+  border-radius: 50%;
+  background: var(--c);
+  color: #fff;
+  font-size: 0.9em;
+  letter-spacing: 0;
+}
+
+.lv-box.active {
+  border-color: color-mix(in srgb, var(--c) 55%, white);
+  box-shadow:
+    0 0 0 3px color-mix(in srgb, var(--c) 18%, transparent),
+    0 18px 36px -18px color-mix(in srgb, var(--c) 55%, transparent);
+  transform: translateY(-2px);
+}
+
+/* ---------- live ---------- */
+
+.lv-live {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  gap: 14px;
+}
+
+.lv-live-top {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 16px;
+  gap: 8px;
+  min-height: 0;
+}
+
+.lv-input {
+  --c: var(--ink);
+  display: flex;
+  flex-direction: column;
+  padding: 4px 10px 8px;
+}
+
+.lv-frame {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.lv-screen {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  border-radius: 3px;
+  overflow: hidden;
+  background: #1d1b16;
+}
+
+.lv-frame-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.lv-img {
+  animation: lv-cut 0.4s ease-out;
+}
+
+.lv-tag {
+  font-family: var(--mono);
+  font-size: 3px;
+  font-weight: 700;
+  fill: #fff;
+}
+
+.lv-det {
+  animation: lv-fadein 0.35s ease-out both;
+}
+
+.lv-focus {
+  animation: lv-lock 0.45s cubic-bezier(0.2, 0.9, 0.2, 1.2) both;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.lv-corner,
+.lv-scan {
+  display: none;
+}
+
+.lv-hud {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 7px 2px 0;
+  color: var(--ink-2);
+  font-family: var(--mono);
+  font-size: 0.9em;
+}
+
+.lv-rec {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--coral);
+  margin-right: 5px;
+  box-shadow: 0 0 0 3px rgba(229, 72, 77, 0.18);
+  animation: lv-pulse 1.4s ease-in-out infinite;
+}
+
+.lv-boost {
+  padding: 1px 10px;
+  border-radius: 999px;
+  background: rgba(31, 157, 107, 0.12);
+  color: var(--emerald);
+  font-weight: 700;
+}
+
+.lv-baseline {
+  padding: 1px 10px;
+  border-radius: 999px;
+  background: var(--paper-2);
+  color: var(--muted);
+}
+
+.lv-track {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.lv-track::before {
+  content: "";
+  position: absolute;
+  top: 10%;
+  bottom: 10%;
+  width: 2px;
+  border-radius: 2px;
+  background: var(--line);
+}
+
+.lv-track i {
+  position: relative;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--card);
+  border: 2px solid var(--line-2);
+  transition: all 0.3s;
+}
+
+.lv-track i.past {
+  background: var(--indigo);
+  border-color: var(--indigo);
+  opacity: 0.45;
+}
+
+.lv-track i.on {
+  width: 12px;
+  height: 12px;
+  background: var(--indigo);
+  border-color: var(--indigo);
+  box-shadow: 0 0 0 4px rgba(62, 99, 221, 0.18);
+}
+
+.lv-live-bottom {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+  gap: 18px;
+  align-items: stretch;
+}
+
+.lv-jev {
+  --c: var(--indigo);
+  background: linear-gradient(180deg, #ffffff, #f4f6ff);
+  border-color: color-mix(in srgb, var(--indigo) 22%, white);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.lv em {
+  font-style: normal;
+  color: var(--muted);
+  margin-right: 6px;
+  font-size: 0.88em;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.lv-kv {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.lv-kv b {
+  font-weight: 700;
+}
+
+.lv-bbox {
+  font-family: var(--mono);
+  font-weight: 500 !important;
+  color: var(--indigo);
+}
+
+.lv-x {
+  font-style: normal;
+  color: var(--coral);
+  font-size: 0.9em;
+}
+
+.lv-conf {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.lv-meter {
+  position: relative;
+  flex: 0 1 160px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--paper-2);
+}
+
+.lv-meter i {
+  position: absolute;
+  inset: 0 auto 0 0;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #7c96ef, var(--indigo));
+  transition: width 1.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.lv-meter b {
+  position: absolute;
+  top: -4px;
+  bottom: -4px;
+  width: 2px;
+  border-radius: 2px;
+  background: var(--ink);
+}
+
+.lv-num {
+  font-family: var(--mono);
+  color: var(--indigo);
+}
+
+.lv-lock {
+  align-self: flex-start;
+  padding: 1px 10px;
+  border-radius: 999px;
+  background: var(--paper-2);
+  color: var(--ink-2);
+  font-size: 0.88em;
+  font-weight: 600;
+}
+
+.lv-lock::before {
+  content: "";
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  margin-right: 6px;
+  border-radius: 2px;
+  background: var(--ink-2);
+  vertical-align: 1px;
+}
+
+.lv-versions {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  font-family: var(--mono);
+  font-size: 0.88em;
+  color: var(--indigo);
+}
+
+.lv-versions span {
+  padding: 0 6px;
+  border-radius: 6px;
+  background: rgba(62, 99, 221, 0.08);
+}
+
+.lv-latest {
+  margin-top: auto;
+  padding: 5px 10px;
+  border-radius: 4px;
+  background: rgba(217, 119, 6, 0.09);
+  color: #9a5a05;
+  font-family: var(--mono);
+  font-size: 0.9em;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.lv-latest.flash {
+  animation: lv-flash 0.9s ease-out 2;
+}
+
+.lv-outs {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 12px;
+  padding-left: 18px;
+}
+
+.lv-outs::before {
+  content: "";
+  position: absolute;
+  left: 2px;
+  top: 14%;
+  bottom: 14%;
+  border-left: 2px dashed var(--line-2);
+}
+
+.lv-outs .lv-box {
+  padding: 2px 12px 8px;
+}
+
+.lv-outs .lv-box::before {
+  content: "";
+  position: absolute;
+  left: -17px;
+  top: 50%;
+  width: 14px;
+  border-top: 2px dashed var(--line-2);
+}
+
+.lv-tplus {
+  align-self: flex-end;
+  color: var(--muted);
+  font-size: 0.88em;
+  margin-bottom: -4px;
+}
+
+.lv-out {
+  --c: var(--emerald);
+}
+
+.lv-fallback {
+  --c: var(--amber);
+}
+
+.lv-out span,
+.lv-fallback span {
+  font-family: var(--mono);
+  color: color-mix(in srgb, var(--c) 80%, black);
+  white-space: nowrap;
+}
+
+.lv-readonly {
+  align-self: flex-end;
+  color: var(--muted);
+  font-size: 0.85em;
+}
+
+.lv-readonly b {
+  color: var(--amber);
+}
+
+/* ---------- spine ---------- */
+
+.lv-evo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.lv-evo-line {
+  flex: 0 1 28%;
+  width: 2px;
+  border-radius: 2px;
+  background: linear-gradient(var(--indigo), var(--emerald));
+  opacity: 0.4;
+}
+
+.lv-evo-label {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-size: 0.78em;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: var(--ink-2);
+  white-space: nowrap;
+}
+
+/* ---------- background ---------- */
+
+.lv-bg {
+  display: flex;
+  flex-direction: column;
+  background: rgba(235, 230, 219, 0.45);
+}
+
+.lv-bg-grid {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-rows: auto minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-areas:
+    "traj store"
+    "propose store"
+    "probe compose";
+  gap: 22px 26px;
+  padding-top: 4px;
+}
+
+.lv-traj {
+  grid-area: traj;
+  --c: var(--rose);
+}
+
+.lv-propose {
+  grid-area: propose;
+  --c: var(--violet);
+}
+
+.lv-probe {
+  grid-area: probe;
+  --c: var(--teal);
+}
+
+.lv-compose {
+  grid-area: compose;
+  --c: var(--sky);
+}
+
+.lv-store {
+  grid-area: store;
+  --c: var(--ochre);
+  overflow: hidden;
+}
+
+.lv-traj::after,
+.lv-propose::after,
+.lv-probe::after,
+.lv-compose::after {
+  position: absolute;
+  color: var(--line-2);
+  font-size: 12px;
+}
+
+.lv-traj::after,
+.lv-propose::after {
+  content: "↓";
+  left: 50%;
+  bottom: -21px;
+  transform: translateX(-50%);
+}
+
+.lv-probe::after {
+  content: "→";
+  right: -21px;
+  top: 45%;
+}
+
+.lv-compose::after {
+  content: "↑";
+  right: 20%;
+  top: -22px;
+}
+
+.lv-propose.past > :not(legend) {
+  opacity: 0.5;
+}
+
+.lv-glyphs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding-top: 2px;
+}
+
+.lv-glyphs span {
+  display: inline-grid;
+  place-items: center;
+  width: 1.55em;
+  height: 1.55em;
+  border-radius: 6px;
+  font-size: 0.85em;
+  font-weight: 700;
+  animation: lv-pop 0.3s both;
+}
+
+.lv-glyphs .ok {
+  color: var(--emerald);
+  background: rgba(31, 157, 107, 0.12);
+}
+.lv-glyphs .bad {
+  color: var(--coral);
+  background: rgba(229, 72, 77, 0.1);
+}
+.lv-glyphs .mid {
+  color: var(--amber);
+  background: rgba(217, 119, 6, 0.12);
+}
+
+.lv-hyp {
+  margin-bottom: 4px;
+}
+
+.lv-hyp b {
+  padding: 0 6px;
+  border-radius: 6px;
+  background: var(--violet);
+  color: #fff;
+}
+
+.lv-fixline {
+  font-family: var(--mono);
+  font-size: 0.88em;
+  color: var(--emerald);
+  animation: lv-fadein 0.35s both;
+}
+
+.lv-fixline.lib {
+  color: var(--rose);
+}
+
+.lv-fixline.bad {
+  color: var(--coral);
+}
+
+.lv-propose {
+  overflow: hidden;
+}
+
+.lv-notes {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  line-clamp: 4;
+  overflow: hidden;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px dashed var(--line);
+  font-size: 0.86em;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.lv-stage {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  animation: lv-fadein 0.35s both;
+}
+
+.lv-stage b {
+  font-family: var(--mono);
+}
+
+.lv-star {
+  color: var(--amber);
+}
+
+.lv-mini {
+  height: 6px;
+  border-radius: 999px;
+  background: var(--paper-2);
+  overflow: hidden;
+}
+
+.lv-mini i {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  transition: width 0.6s;
+}
+
+.lv-mini i.ok {
+  background: var(--emerald);
+}
+
+.lv-mini i.bad {
+  background: var(--coral);
+}
+
+.lv-stage .lv-dim {
+  font-size: 0.86em;
+}
+
+.lv-thumbs {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.lv-thumb {
+  position: relative;
+  border-radius: 3px;
+  overflow: hidden;
+  line-height: 0;
+  outline: 2px solid;
+  outline-offset: -2px;
+}
+
+.lv-thumb.ok {
+  outline-color: rgba(31, 157, 107, 0.75);
+}
+
+.lv-thumb.ko {
+  outline-color: rgba(229, 72, 77, 0.75);
+}
+
+.lv-thumb img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+.lv-thumb b {
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  display: grid;
+  place-items: center;
+  width: 1.4em;
+  height: 1.4em;
+  border-radius: 50%;
+  line-height: 1;
+  font-size: 0.75em;
+  color: #fff;
+}
+
+.lv-thumb.ok b {
+  background: var(--emerald);
+}
+
+.lv-thumb.ko b {
+  background: var(--coral);
+}
+
+.lv-actions {
+  margin-top: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  font-family: var(--mono);
+  font-size: 0.82em;
+}
+
+.lv-actions span {
+  padding: 1px 8px;
+  border-radius: 999px;
+  background: rgba(2, 132, 199, 0.09);
+  color: var(--sky);
+}
+
+.lv-actions span.bad {
+  background: rgba(229, 72, 77, 0.1);
+  color: var(--coral);
+}
+
+.lv-ver {
+  display: inline-block;
+  margin: 2px 0 8px;
+  padding: 1px 10px;
+  border-radius: 999px;
+  background: var(--ochre);
+  color: #fff;
+  font-family: var(--mono);
+  font-weight: 700;
+  font-size: 0.88em;
+}
+
+.lv-entry {
+  padding: 6px 10px;
+  margin-bottom: 6px;
+  border-radius: 4px;
+  background: #fbf8f1;
+  border: 1px solid var(--line);
+  font-family: var(--mono);
+  font-size: 0.9em;
+  color: var(--ink-2);
+}
+
+.lv-entry div + div {
+  color: var(--ochre);
+  font-weight: 600;
+}
+
+.lv-entry.fresh {
+  animation: lv-flash 0.9s ease-out 2;
+  border-color: color-mix(in srgb, var(--ochre) 50%, white);
+}
+
+.lv-ico {
+  display: inline-block;
+  width: 1.2em;
+  color: var(--ochre);
+}
+
+/* ---------- status ---------- */
+
+.lv-status {
+  padding: 0 0 12px;
+  color: var(--muted);
+}
+
+.lv-progress {
+  height: 4px;
+  border-radius: 999px;
+  background: var(--paper-2);
+  overflow: hidden;
+}
+
+.lv-progress i {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--indigo), var(--emerald));
+  transition: width 0.12s linear;
+}
+
+.lv-status-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding-top: 8px;
+}
+
+.lv-stats {
+  display: flex;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.lv-stats span {
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  font-size: 0.9em;
+}
+
+.lv-stats b {
+  font-family: var(--mono);
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.lv-note {
+  font-size: 0.82em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.lv-controls {
+  display: flex;
+  gap: 4px;
+  padding: 3px;
+  border-radius: 999px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  white-space: nowrap;
+}
+
+.lv-controls button {
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink-2);
+  padding: 3px 12px;
+  cursor: pointer;
+  font-size: 0.9em;
+  font-weight: 500;
+}
+
+.lv-controls button:hover {
+  background: var(--paper);
+}
+
+.lv-controls button.on {
+  background: var(--ink);
+  color: #fff;
+}
+
+/* ---------- motion ---------- */
+
+@keyframes lv-pulse {
+  50% {
+    box-shadow: 0 0 0 6px rgba(229, 72, 77, 0);
+  }
+}
+
+@keyframes lv-fadein {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes lv-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+}
+
+@keyframes lv-cut {
+  from {
+    opacity: 0.35;
+  }
+}
+
+@keyframes lv-lock {
+  from {
+    opacity: 0;
+    transform: scale(1.35);
+  }
+}
+
+@keyframes lv-flash {
+  0% {
+    background: rgba(217, 119, 6, 0.28);
+  }
+}
+
+/* Small screens cannot fit both halves side by side: stack and scroll instead. */
+@media (max-width: 980px), (max-height: 560px) {
+  .lv {
+    height: auto;
+    overflow: visible;
+  }
+  .lv-main {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .lv-screen {
+    aspect-ratio: 4 / 3;
+    flex: none;
+  }
+  .lv-evo {
+    flex-direction: row;
+  }
+  .lv-evo-label {
+    writing-mode: horizontal-tb;
+    transform: none;
+  }
+  .lv-evo-line {
+    width: auto;
+    height: 2px;
+    flex: 1;
+  }
+  .lv-status-row {
+    flex-wrap: wrap;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lv *,
+  .lv *::before,
+  .lv *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* ---------- pillars ---------- */
+
+.lv-pillars {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.lv-pillar {
+  --c: var(--ink);
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  padding: 4px 12px 4px 10px;
+  border-radius: 999px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+  white-space: nowrap;
+}
+
+.lv-pillar b {
+  font-family: var(--mono);
+  font-size: 1.15em;
+  font-weight: 700;
+  color: var(--c);
+  animation: lv-pop 0.4s both;
+}
+
+.lv-pillar i {
+  font-style: normal;
+  font-family: var(--mono);
+  font-size: 0.85em;
+  color: color-mix(in srgb, var(--c) 70%, white);
+}
+
+.lv-pillar span {
+  color: var(--ink-2);
+  font-size: 0.86em;
+}
+
+.lv-pillar.tone-ink {
+  --c: var(--ink);
+}
+.lv-pillar.tone-violet {
+  --c: var(--violet);
+}
+.lv-pillar.tone-teal {
+  --c: var(--teal);
+}
+.lv-pillar.tone-ochre {
+  --c: var(--ochre);
+}
+
+/* ---------- rounds ---------- */
+
+.lv-rounds {
+  flex: 1;
+  min-height: 70px;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.lv-round {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  min-height: 0;
+}
+
+.lv-round b {
+  font-family: var(--mono);
+  font-size: 0.86em;
+}
+
+.lv-round small {
+  color: var(--muted);
+  font-size: 0.78em;
+}
+
+.lv-round-bar {
+  position: relative;
+  flex: 1;
+  width: 100%;
+  min-height: 30px;
+  border-radius: 3px;
+  background: var(--paper-2);
+  overflow: hidden;
+}
+
+.lv-round-bar i {
+  position: absolute;
+  inset: auto 0 0 0;
+  border-radius: 3px;
+  background: linear-gradient(0deg, color-mix(in srgb, var(--sky) 55%, white), var(--sky));
+  transition: height 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.lv-round.pending {
+  opacity: 0.45;
+}
+
+.lv-round.win .lv-round-bar i {
+  background: linear-gradient(0deg, color-mix(in srgb, var(--emerald) 55%, white), var(--emerald));
+}
+
+.lv-round.win b {
+  color: var(--emerald);
+}
+
+.lv-compose {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Long credit lines and phase labels must shrink instead of widening the page. */
+.lv {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.lv-head > *,
+.lv-status-row > * {
+  min-width: 0;
+}
+
+.lv-note {
+  flex: 1 1 0;
+}
+
+.lv-note a {
+  color: inherit;
+}
+
+/* ===================================================================== */
+/* Motion: make the before -> after change impossible to miss             */
+/* ===================================================================== */
+
+.lv-main {
+  position: relative;
+}
+
+/* ---- before / after wipe ---- */
+
+.lv-after {
+  position: absolute;
+  inset: 0;
+  clip-path: inset(0 100% 0 0);
+  animation: lv-wipe-reveal 1.8s cubic-bezier(0.65, 0, 0.35, 1) 0.4s forwards;
+}
+
+.lv-wipe {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 3px;
+  background: linear-gradient(var(--emerald), var(--indigo));
+  box-shadow: 0 0 18px 4px rgba(31, 157, 107, 0.55);
+  animation: lv-wipe-line 1.8s cubic-bezier(0.65, 0, 0.35, 1) 0.4s forwards;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.lv-wipe span,
+.lv-side {
+  position: absolute;
+  top: 12px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 0.78em;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.lv-wipe span {
+  right: 10px;
+  background: var(--emerald);
+  color: #fff;
+}
+
+.lv-side.before {
+  right: 12px;
+  background: rgba(29, 27, 22, 0.7);
+  color: #fff;
+  animation: lv-fade-out 0.5s ease 2s forwards;
+}
+
+.lv-screen.is-after {
+  box-shadow:
+    0 0 0 3px rgba(31, 157, 107, 0.0),
+    inset 0 0 0 0 transparent;
+  animation: lv-screen-glow 2.6s ease 2.1s 1 both;
+}
+
+/* ---- scoreboard ---- */
+
+.lv-score {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 3;
+  padding: 8px 12px 9px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(6px);
+  box-shadow: 0 10px 30px -12px rgba(29, 27, 22, 0.45);
+  animation: lv-drop-in 0.5s cubic-bezier(0.2, 0.9, 0.2, 1.1) both;
+}
+
+.lv-score-row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.lv-score-cell {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.05;
+}
+
+.lv-score-cell small {
+  font-size: 0.68em;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.lv-score-cell b {
+  font-family: var(--mono);
+  font-size: calc(var(--fs) * 1.9);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+}
+
+.lv-score-cell.before b {
+  color: var(--coral);
+}
+
+.lv-score-cell.after b {
+  color: var(--muted);
+}
+
+.lv-score.revealed .lv-score-cell.after b {
+  color: var(--emerald);
+  animation: lv-pulse-text 1.2s ease 1.6s 2;
+}
+
+.lv-score.revealed .lv-score-cell.before b {
+  text-decoration: line-through;
+  text-decoration-thickness: 2px;
+  opacity: 0.55;
+  transition: opacity 0.6s ease 1.5s;
+}
+
+.lv-score-arrow {
+  font-size: 1.4em;
+  color: var(--muted);
+}
+
+.lv-score.revealed .lv-score-arrow {
+  color: var(--emerald);
+  animation: lv-nudge 0.9s ease-in-out infinite;
+}
+
+.lv-gain {
+  position: absolute;
+  right: -8px;
+  top: -18px;
+  padding: 2px 9px;
+  border-radius: 999px;
+  background: var(--emerald);
+  color: #fff;
+  font-family: var(--mono);
+  font-weight: 800;
+  font-size: 0.85em;
+  box-shadow: 0 6px 16px -6px rgba(31, 157, 107, 0.8);
+  animation: lv-gain-pop 0.7s cubic-bezier(0.2, 1.4, 0.4, 1) 1.5s both;
+}
+
+.lv-dots {
+  display: flex;
+  gap: 5px;
+  margin-top: 7px;
+}
+
+.lv-dots i {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.lv-dots i.ok {
+  background: var(--emerald);
+}
+
+.lv-dots i.ko {
+  background: var(--coral);
+}
+
+.lv-dots i.flip {
+  animation: lv-flip 0.6s ease both;
+}
+
+.lv-dots i.flip.ok {
+  box-shadow: 0 0 0 3px rgba(31, 157, 107, 0.2);
+}
+
+/* ---- confetti ---- */
+
+.lv-confetti {
+  position: absolute;
+  left: 50%;
+  top: 45%;
+  z-index: 4;
+  pointer-events: none;
+}
+
+.lv-confetti i {
+  position: absolute;
+  width: 8px;
+  height: 12px;
+  border-radius: 2px;
+  opacity: 0;
+  animation: lv-burst 1.4s cubic-bezier(0.15, 0.7, 0.3, 1) 1.9s forwards;
+}
+
+/* ---- captions ---- */
+
+.lv-caption {
+  --c: var(--ink);
+  position: absolute;
+  left: 50%;
+  bottom: 14px;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: calc(100% - 28px);
+  padding: 9px 16px 9px 9px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(6px);
+  box-shadow: 0 14px 34px -14px rgba(29, 27, 22, 0.55);
+  transform: translateX(-50%);
+  animation: lv-caption-in 0.55s cubic-bezier(0.2, 0.9, 0.2, 1.1) both;
+}
+
+.lv-caption span {
+  flex: none;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: var(--c);
+  color: #fff;
+  font-size: 0.74em;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.lv-caption p {
+  margin: 0;
+  font-size: calc(var(--fs) * 1.08);
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.lv-caption.tone-bad {
+  --c: var(--coral);
+}
+.lv-caption.tone-ok {
+  --c: var(--emerald);
+}
+.lv-caption.tone-violet {
+  --c: var(--violet);
+}
+.lv-caption.tone-rose {
+  --c: var(--rose);
+}
+.lv-caption.tone-sky {
+  --c: var(--sky);
+}
+.lv-caption.tone-indigo {
+  --c: var(--indigo);
+}
+.lv-caption.tone-amber {
+  --c: var(--amber);
+}
+.lv-caption.tone-ochre {
+  --c: var(--ochre);
+}
+
+/* ---- pillars grow ---- */
+
+.lv-pillar {
+  position: relative;
+}
+
+.lv-pillar.grew {
+  animation: lv-pill-glow 1.4s ease both;
+}
+
+.lv-plus1 {
+  position: absolute;
+  right: 6px;
+  top: -4px;
+  font-style: normal;
+  font-family: var(--mono);
+  font-weight: 800;
+  color: var(--c);
+  animation: lv-float-up 1.4s ease-out forwards;
+  pointer-events: none;
+}
+
+/* ---- background cards ---- */
+
+.lv-reveal > * {
+  animation: lv-wipe-in 0.5s ease both;
+}
+
+.lv-reveal > *:nth-child(2) {
+  animation-delay: 0.12s;
+}
+.lv-reveal > *:nth-child(3) {
+  animation-delay: 0.24s;
+}
+.lv-reveal > *:nth-child(4) {
+  animation-delay: 0.36s;
+}
+.lv-reveal > *:nth-child(5) {
+  animation-delay: 0.48s;
+}
+
+.lv-thumb {
+  animation: lv-pop 0.45s cubic-bezier(0.2, 1.3, 0.4, 1) both;
+}
+
+.lv-entry {
+  animation: lv-slide-in 0.5s ease both;
+}
+
+.lv-entry.fresh {
+  animation:
+    lv-slide-in 0.6s cubic-bezier(0.2, 1.2, 0.4, 1) both,
+    lv-flash 0.9s ease-out 0.6s 2;
+}
+
+.lv-box.active {
+  animation: lv-breathe 1.8s ease-in-out infinite;
+}
+
+.lv-traj::after,
+.lv-propose::after,
+.lv-compose::after {
+  animation: lv-bob 1.2s ease-in-out infinite;
+  color: var(--indigo);
+  opacity: 0.6;
+}
+
+.lv-probe::after {
+  animation: lv-nudge 1.2s ease-in-out infinite;
+  color: var(--indigo);
+  opacity: 0.6;
+}
+
+.lv-round-bar i::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(100deg, transparent 30%, rgba(255, 255, 255, 0.55) 50%, transparent 70%);
+  background-size: 250% 100%;
+  animation: lv-shine 2.4s linear infinite;
+}
+
+.lv-progress i {
+  position: relative;
+  overflow: hidden;
+}
+
+.lv-progress i::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.7), transparent);
+  background-size: 40% 100%;
+  background-repeat: no-repeat;
+  animation: lv-sweep 1.8s linear infinite;
+}
+
+.lv-glyphs span:last-child {
+  animation: lv-pop 0.5s cubic-bezier(0.2, 1.5, 0.4, 1) both;
+}
+
+/* ---- summary ---- */
+
+.lv-summary {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  background: rgba(244, 241, 234, 0.82);
+  backdrop-filter: blur(8px);
+  animation: lv-fade-in 0.5s ease both;
+}
+
+.lv-summary .lv-confetti {
+  top: 30%;
+}
+
+.lv-summary .lv-confetti i {
+  animation-delay: 1.6s;
+}
+
+.lv-summary-card {
+  width: min(760px, 92%);
+  padding: 28px 34px 26px;
+  border-radius: 8px;
+  background: var(--card);
+  box-shadow: 0 40px 80px -30px rgba(29, 27, 22, 0.45);
+  text-align: center;
+  animation: lv-rise-in 0.7s cubic-bezier(0.2, 0.9, 0.2, 1.05) both;
+}
+
+.lv-summary-kicker {
+  margin: 0;
+  font-size: 0.8em;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.lv-summary-card h2 {
+  margin: 8px 0 0;
+  font-family: var(--mono);
+  font-size: calc(var(--fs) * 4.2);
+  font-weight: 800;
+  letter-spacing: -0.05em;
+  line-height: 1;
+}
+
+.lv-summary-card h2 .from {
+  color: var(--coral);
+}
+
+.lv-summary-card h2 .arrow {
+  margin: 0 0.3em;
+  color: var(--muted);
+  font-weight: 400;
+}
+
+.lv-summary-card h2 .to {
+  background: linear-gradient(90deg, var(--emerald), var(--indigo));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.lv-summary-sub {
+  margin: 8px 0 18px;
+  color: var(--ink-2);
+}
+
+.lv-summary-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  text-align: left;
+}
+
+.lv-summary-row {
+  display: grid;
+  grid-template-columns: 170px 1fr 120px;
+  gap: 14px;
+  align-items: center;
+  animation: lv-slide-in 0.5s ease both;
+}
+
+.lv-summary-row .name {
+  font-weight: 600;
+}
+
+.lv-summary-row .bars {
+  position: relative;
+  height: 16px;
+  border-radius: 999px;
+  background: var(--paper-2);
+  overflow: hidden;
+}
+
+.lv-summary-row .bars i {
+  position: absolute;
+  inset: 0 auto 0 0;
+  border-radius: 999px;
+}
+
+.lv-summary-row .bars .before {
+  background: rgba(229, 72, 77, 0.55);
+}
+
+.lv-summary-row .bars .after {
+  background: linear-gradient(90deg, var(--emerald), var(--indigo));
+  transform-origin: left;
+  animation: lv-grow-x 1.2s cubic-bezier(0.2, 0.9, 0.2, 1) both;
+}
+
+.lv-summary-row .nums {
+  font-family: var(--mono);
+  color: var(--muted);
+  text-align: right;
+}
+
+.lv-summary-row .nums b {
+  color: var(--emerald);
+}
+
+.lv-summary-pills {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+.lv-summary-pills span {
+  padding: 5px 14px;
+  border-radius: 999px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  animation: lv-pop 0.5s cubic-bezier(0.2, 1.4, 0.4, 1) 1.8s both;
+}
+
+.lv-summary-pills b {
+  font-family: var(--mono);
+  color: var(--indigo);
+}
+
+/* ---- keyframes ---- */
+
+@keyframes lv-wipe-reveal {
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes lv-wipe-line {
+  0% {
+    left: 0;
+    opacity: 1;
+  }
+  92% {
+    left: calc(100% - 3px);
+    opacity: 1;
+  }
+  100% {
+    left: calc(100% - 3px);
+    opacity: 0;
+  }
+}
+
+@keyframes lv-screen-glow {
+  0% {
+    box-shadow: 0 0 0 0 rgba(31, 157, 107, 0.6);
+  }
+  35% {
+    box-shadow: 0 0 0 6px rgba(31, 157, 107, 0.35);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(31, 157, 107, 0);
+  }
+}
+
+@keyframes lv-drop-in {
+  from {
+    opacity: 0;
+    transform: translateY(-12px) scale(0.96);
+  }
+}
+
+@keyframes lv-caption-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 18px) scale(0.97);
+  }
+}
+
+@keyframes lv-gain-pop {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.4);
+  }
+}
+
+@keyframes lv-flip {
+  0% {
+    transform: rotateY(0) scale(1);
+  }
+  50% {
+    transform: rotateY(90deg) scale(1.3);
+  }
+  100% {
+    transform: rotateY(0) scale(1);
+  }
+}
+
+@keyframes lv-burst {
+  0% {
+    opacity: 1;
+    transform: translate(0, 0) rotate(0) scale(0.6);
+  }
+  70% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--dx), calc(var(--dy) + 60px)) rotate(var(--r)) scale(1);
+  }
+}
+
+@keyframes lv-pulse-text {
+  50% {
+    transform: scale(1.12);
+  }
+}
+
+@keyframes lv-nudge {
+  50% {
+    transform: translateX(4px);
+  }
+}
+
+@keyframes lv-bob {
+  50% {
+    transform: translate(-50%, 3px);
+  }
+}
+
+@keyframes lv-pill-glow {
+  0% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--c) 45%, transparent);
+    transform: scale(1);
+  }
+  30% {
+    box-shadow: 0 0 0 6px color-mix(in srgb, var(--c) 20%, transparent);
+    transform: scale(1.08);
+  }
+  100% {
+    box-shadow: var(--shadow);
+    transform: scale(1);
+  }
+}
+
+@keyframes lv-float-up {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-22px);
+  }
+}
+
+@keyframes lv-wipe-in {
+  from {
+    opacity: 0;
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    opacity: 1;
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes lv-slide-in {
+  from {
+    opacity: 0;
+    transform: translateX(16px);
+  }
+}
+
+@keyframes lv-breathe {
+  50% {
+    box-shadow:
+      0 0 0 5px color-mix(in srgb, var(--c) 14%, transparent),
+      0 22px 40px -18px color-mix(in srgb, var(--c) 60%, transparent);
+  }
+}
+
+@keyframes lv-shine {
+  from {
+    background-position: 150% 0;
+  }
+  to {
+    background-position: -100% 0;
+  }
+}
+
+@keyframes lv-sweep {
+  from {
+    background-position: -40% 0;
+  }
+  to {
+    background-position: 140% 0;
+  }
+}
+
+@keyframes lv-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes lv-fade-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes lv-rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(24px) scale(0.96);
+  }
+}
+
+@keyframes lv-grow-x {
+  from {
+    transform: scaleX(0);
+  }
+}
+
+.lv-compose::after {
+  animation-name: lv-bob-y;
+}
+
+@keyframes lv-bob-y {
+  50% {
+    transform: translateY(-3px);
+  }
+}
+
+.lv-gain {
+  position: static;
+  align-self: center;
+  margin-left: 2px;
+}
+
+.lv-caption p {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+}
+
+/* Probe thumbnails: at most two short rows, clipped by the card rather than spilling out. */
+.lv-probe {
+  overflow: hidden;
+}
+
+.lv-thumbs {
+  gap: 4px;
+}
+
+/* Squarer overlays: floating labels read as tags, not bubbles. */
+.lv-caption,
+.lv-caption span,
+.lv-pillar,
+.lv-gain,
+.lv-wipe span,
+.lv-side,
+.lv-phase,
+.lv-summary-pills span,
+.lv-box > legend,
+.lv-sec > legend,
+.lv-controls,
+.lv-controls button,
+.lv-stats span,
+.lv-actions span,
+.lv-baseline,
+.lv-boost,
+.lv-lock,
+.lv-ver {
+  border-radius: 4px;
+}
+
+/* Bars and meters: slightly softened ends only. */
+.lv-meter,
+.lv-meter i,
+.lv-mini,
+.lv-mini i,
+.lv-progress,
+.lv-progress i,
+.lv-summary-row .bars,
+.lv-summary-row .bars i {
+  border-radius: 2px;
+}

@@ -21,6 +21,7 @@ import shutil
 import subprocess
 
 from . import config
+from .core import jev
 from .install import PATCHES, missing_runners
 from .substrate.opencode import OpencodeSubstrate
 
@@ -45,6 +46,7 @@ def check(adapter, *, judge=False) -> list[str]:
 
     for validate in (
         lambda: config.validate_models(judge=judge),
+        jev.validate,
         adapter.tasks,
         OpencodeSubstrate().preflight,
         adapter.preflight,

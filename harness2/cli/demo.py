@@ -20,6 +20,8 @@ import argparse
 import json
 from pathlib import Path
 
+from .. import config
+from ..core import jev
 from ..core.schedule import mode_token, run_domain
 from ..demo import DemoAdapter, DemoProposer
 
@@ -32,6 +34,10 @@ def main(argv=None) -> int:
     args = parser.parse_args(argv)
     if args.k < 1:
         parser.error("--k must be positive")
+    try:
+        jev.validate()
+    except config.ConfigError as exc:
+        parser.error(str(exc))
     root = args.output.expanduser().resolve()
     adapter = DemoAdapter(root)
     proposer = DemoProposer(adapter.spec.channels["proposer"])

@@ -65,6 +65,84 @@ Keep `gcloud` on `PATH` for these Vertex configurations, including the key-file
 route: the installation check runs
 `gcloud auth application-default print-access-token`.
 
+## Jev selection
+
+[Jev](https://docs.typesafe.ai/introduction) returns typed decisions rather than
+generated code. Harness² can use it to select among the final outputs of a
+`k > 1` run. The executor, harness editor, composer, reflection, and benchmark
+judges retain their existing models.
+
+Install the optional SDK and set an API key from the
+[TypeSafe console](https://console.typesafe.ai/):
+
+```bash
+uv pip install -e '.[jev]'
+export TYPESAFE_API_KEY="your-api-key"
+export HARNESS2_SELECTOR=jev
+```
+
+These settings can also go in your local `.env`. To try the integration with
+deterministic local executors and editors, run:
+
+```bash
+harness2-demo --output runs/demo-jev --k 2
+```
+
+Only Jev makes paid API calls in this demo. Both final outputs may be equally
+good, in which case Jev defers to the deterministic demo selector. To use Jev in
+a configured benchmark, choose a fresh run directory:
+
+```bash
+HARNESS2_RUNS_DIR=runs/lab-jev harness2 --bench lab --k 2 --mode parallel \
+  --only-domains antitrust-competition --max-tasks 1
+```
+
+Use the same `HARNESS2_RUNS_DIR` for judging and reporting. Selection settings
+are recorded in the experiment identity; changing them requires a new output
+directory. The ordinary agent selector remains the default when
+`HARNESS2_SELECTOR` is unset. At `k=1`, the sole final is delivered without any
+selector API call.
+
+| Setting | Default | Meaning |
+|---|---|---|
+| `HARNESS2_SELECTOR` | `proposer` | `jev` enables Jev before the existing selector |
+| `TYPESAFE_API_KEY` | required for Jev | API credential; excluded from run records |
+| `HARNESS2_JEV_MODEL` | `jev-1.14.0` | Pinned model; use a versioned ID for reproducible experiments |
+| `HARNESS2_JEV_MIN_CONFIDENCE` | `0.6` | Minimum confidence for every candidate's individual judgments |
+| `HARNESS2_JEV_MAX_REQUEST_BYTES` | `28000` | Maximum complete JSON request size before deferring to the agent |
+
+The request contains the task, complete sanitized text source files, and
+anonymized candidate outputs. Jev answers one Score question per candidate and
+dimension in a single call. Code compares the resulting tuples in this order:
+delivery, format conformance, source fidelity, internal consistency, and
+usability. Format conformance is omitted for benchmarks whose selection policy
+does not require full conformance. Higher-priority dimensions take precedence
+over all lower-priority dimensions.
+
+This is an experimental selection policy, not a benchmark judge. The default
+confidence threshold needs validation on your tasks; confidence describes the
+answer distribution, not a guarantee of correctness. See TypeSafe's
+[Score](https://docs.typesafe.ai/primitives/score) and
+[confidence](https://docs.typesafe.ai/confidence) documentation.
+
+Low confidence, tied leaders, invalid responses, and service failures defer to
+the existing agent selector. So do binary sources, candidate attachments,
+session-transcript evidence, and requests exceeding the local byte budget.
+Evidence is never truncated to fit Jev. The API's actual token limits still
+apply; byte size is only a conservative local guard. This initial integration
+is most useful for compact text deliverables. The agent selector continues to
+handle work requiring visual inspection or tools.
+
+`selection.json` records the selector that actually chose the output, Jev's
+answers, resolved model, token usage, elapsed time, and any deferral reason.
+The full request and response are saved beside the selection context, for
+example `selection/agg2.jev.json`, so the fallback selector cannot read Jev's
+judgments. Known model versions include an estimated Jev charge in the
+selection's `usd`, using the published $0.042 per million input tokens for Jev
+1.13/1.14. Output tokens are free; unsuccessful/retried requests and unknown
+model prices are not included in that estimate. Verify actual charges in the
+console. [TypeSafe model reference](https://docs.typesafe.ai/models).
+
 ## Benchmark installation
 
 Install only the benchmark you intend to run:

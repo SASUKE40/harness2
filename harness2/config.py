@@ -16,6 +16,7 @@
 
 from __future__ import annotations
 
+import math
 import os
 import sys
 from pathlib import Path
@@ -176,6 +177,35 @@ PROPOSER_MODEL_BY_CHANNEL = {"opencode": IMPROVER_MODEL, "claude_cli": IMPROVER_
 PHASE_WIDTH = 2
 TRANSPORT_ATTEMPTS = 2
 PROPOSER_CONCURRENCY = 2
+
+
+def selector_settings() -> dict:
+    """Non-secret selector identity; read lazily so ordinary runs need no Jev settings."""
+    backend = str(env("HARNESS2_SELECTOR", "proposer"))
+    if backend not in ("proposer", "jev"):
+        raise ConfigError("HARNESS2_SELECTOR must be 'proposer' or 'jev'")
+    if backend == "proposer":
+        return {"backend": backend}
+    try:
+        confidence = float(env("HARNESS2_JEV_MIN_CONFIDENCE", "0.6"))
+    except ValueError as exc:
+        raise ConfigError("HARNESS2_JEV_MIN_CONFIDENCE must be a number from 0 to 1") from exc
+    if not math.isfinite(confidence) or not 0 <= confidence <= 1:
+        raise ConfigError("HARNESS2_JEV_MIN_CONFIDENCE must be a number from 0 to 1")
+    max_bytes = env_int("HARNESS2_JEV_MAX_REQUEST_BYTES", 28000)
+    if max_bytes < 1:
+        raise ConfigError("HARNESS2_JEV_MAX_REQUEST_BYTES must be positive")
+    settings = {
+        "backend": backend,
+        "model": str(env("HARNESS2_JEV_MODEL", "jev-1.14.0")),
+        "min_confidence": confidence,
+        "max_request_bytes": max_bytes,
+        "policy_version": 2,
+    }
+    # Opt-in image evidence; absent by default so earlier run identities still resume.
+    if str(env("HARNESS2_JEV_IMAGES", "")).lower() in ("1", "true", "yes"):
+        settings["images"] = True
+    return settings
 
 
 def validate_models(*, judge: bool = False) -> None:
